@@ -1,0 +1,45 @@
+#!/usr/bin/python
+
+from __future__ import with_statement
+from optparse import OptionParser
+from PIL import Image, ImageOps
+
+__version__ = '0.1'
+
+def convert(img, opts):
+    if opts.rotate:
+        img = img.rotate(opts.rotate)
+    img = ImageOps.grayscale(img)
+    img = ImageOps.posterize(img, opts.depth)
+    return img
+
+def output(img, opts, outfh):
+    shift = 8 - opts.depth if opts.low else 0
+
+    data = img.load()
+
+    (w, h) = img.size
+
+    for i in range(h):
+        for j in range(w):
+            outfh.write(chr(data[j, i] >> shift))
+
+def run():
+    parser = OptionParser(usage = '%prog [options] <input file> <output file>',
+                          version = __version__)
+    parser.add_option('-d', '--depth', help='depth (in bits)', type='int')
+    parser.add_option('-r', '--rotate', help='rotation (in degrees)', type='int')
+    parser.add_option('--high', help='use high bits of byte', dest='low', action='store_false')
+    parser.add_option('--low', help='use low bits of byte (default)', action='store_true', default=True)
+
+    (options, args) = parser.parse_args()
+
+    if len(args) != 2:
+        parser.error('Two files are required')
+
+    with open(args[1], 'wb') as ofh:
+        img = Image.open(args[0])
+        output(convert(img, options), options, ofh)
+
+if __name__ == '__main__':
+    run()

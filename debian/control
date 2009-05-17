@@ -1,0 +1,14 @@
+Source: mk-rawpic
+Section: host/tools
+Priority: optional
+Maintainer: Mikhail Gusarov <dottedmag@dottedmag.net>
+Build-Depends: debhelper (>= 7)
+Standards-Version: 3.8.0
+
+Package: mk-rawpic
+Architecture: all
+Depends: python (>= 2.5), python-imaging
+Description: Raw pictures generation tool
+ Sometimes it's useful to dump raw picture to the fb device (bootsplash,
+ bootloader etc). This tool convers provided picture to grayscale raw dump,
+ optionally adjusting bits alingment and rotation.

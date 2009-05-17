@@ -1,0 +1,11 @@
+n516 u-boot (raw controller image format):
+
+$ mk-rawpic -d3 -r270 --high input.file output.file
+
+n516 userspace (Linux kernel image format):
+
+$ mk-rawpic -d3 -r270 [--low] input.file output.file
+
+v3:
+
+$ mk-rawpic -d2 [--low] input.file output.file
